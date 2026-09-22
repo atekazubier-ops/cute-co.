@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUTE & CO - لوحة التحكم الملكية 2026</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b0406',
+                        cardBg: '#180a0f',
+                        cardHover: '#241017',
+                        brandGold: '#C5A059',
+                        brandGoldLight: '#E8D5B5',
+                        brandGoldDark: '#9A7B38',
+                        burgundy: '#461421',
+                        burgundyDark: '#2c0c14'
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0b0406;
+            color: #FAF7F2;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #E8D5B5 0%, #C5A059 50%, #9A7B38 100%);
+        }
+        .gold-text-gradient {
+            background: linear-gradient(135deg, #FFF1C1 0%, #C5A059 50%, #9A7B38 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(24, 10, 15, 0.75);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(197, 160, 89, 0.18);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+        .glass-pill {
+            background: rgba(36, 16, 23, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(197, 160, 89, 0.25);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0b0406; }
+        ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brandGold selection:text-darkBg">
+
+    <div id="app" class="flex-1 flex flex-col">
+
+        <!-- 1. LOGIN SCREEN (LUXURY BOUTIQUE) -->
+        <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0b0406] p-4 overflow-hidden">
+            <!-- Background luxury pattern & glow -->
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:40px_40px] pointer-events-none"></div>
+            <div class="absolute -top-32 -right-32 w-96 h-96 bg-brandGold/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-burgundy/30 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="glass-card w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative z-10 border border-brandGold/40">
+                <!-- Header Branding -->
+                <div class="p-8 text-center relative border-b border-brandGold/20 bg-gradient-to-b from-burgundy/50 to-transparent">
+                    <div class="absolute top-4 left-4 text-[10px] bg-brandGold/10 text-brandGoldLight px-3 py-1 rounded-full border border-brandGold/30 font-bold tracking-widest">إصدار النخبة 2026</div>
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl gold-gradient flex items-center justify-center text-darkBg shadow-xl">
+                        <i class="fa-solid fa-crown text-2xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-black tracking-widest gold-text-gradient mb-1">CUTE & CO</h1>
+                    <p class="text-xs text-brandGoldLight/80 font-semibold tracking-wider">نظام الإدارة الملكي الفاخر</p>
+                </div>
+
+                <!-- Form Inputs -->
+                <form id="loginForm" onsubmit="handleLogin(event)" class="p-8 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-2 uppercase tracking-wider">البريد الإلكتروني للإدارة</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 right-0 pr-4 flex items-center text-brandGold">
+                                <i class="fa-solid fa-envelope"></i>
+                            </span>
+                            <input type="email" id="loginEmail" required placeholder="manager@cute-co.com" value="director@cute-co.com"
+                                class="w-full pr-11 pl-4 py-3.5 bg-darkBg/80 border border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brandGold text-xs font-semibold text-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-2 uppercase tracking-wider">كلمة المرور الآمنة</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 right-0 pr-4 flex items-center text-brandGold">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input type="password" id="loginPassword" required placeholder="••••••••" value="123456"
+                                class="w-full pr-11 pl-4 py-3.5 bg-darkBg/80 border border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brandGold text-xs text-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-2 uppercase tracking-wider">الصلاحية الوظيفية</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 right-0 pr-4 flex items-center text-brandGold">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </span>
+                            <select id="loginRole" class="w-full pr-11 pl-4 py-3.5 bg-darkBg/80 border border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brandGold text-xs font-bold text-white">
+                                <option value="sales" class="bg-darkBg">موظف مبيعات (Sales Associate)</option>
+                                <option value="operational" class="bg-darkBg">مدير تشغيلي (Operational Manager)</option>
+                                <option value="executive" selected class="bg-darkBg">مدير تنفيذي (Executive Director)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs pt-1">
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="checkbox" id="rememberMe" class="rounded bg-darkBg border-white/20 text-brandGold focus:ring-brandGold h-4 w-4">
+                            <span class="text-gray-400 font-bold">تذكرني على هذا الجهاز</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 gold-gradient text-darkBg font-black rounded-2xl shadow-xl hover:opacity-95 transition transform active:scale-95 text-xs tracking-widest uppercase">
+                        دخول لوحة التحكم الملكية
+                    </button>
+                    
+                    <div class="text-center pt-2">
+                        <span class="text-[10px] text-gray-500 font-medium">CUTE & CO Elite Management System © 2026</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 2. DASHBOARD MAIN SCREEN (AEROVISTA INSPIRED FLOATING PILL NAVBAR) -->
+        <div id="dashboardScreen" class="hidden flex-1 flex flex-col bg-[#0b0406]">
+            
+            <!-- Floating Pill Navbar (Aerovista Style) -->
+            <header class="px-4 lg:px-8 py-5 z-20 sticky top-0">
+                <div class="max-w-7xl mx-auto glass-pill rounded-full px-6 py-3 flex items-center justify-between shadow-2xl">
+                    
+                    <!-- Left: Brand Logo & Title -->
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center text-darkBg shadow-md">
+                            <i class="fa-solid fa-crown text-base"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-black text-sm text-white tracking-wider">CUTE & CO</h2>
+                            <p class="text-[10px] text-brandGold font-bold tracking-widest">FOR ONLINE SHOPPING</p>
+                        </div>
+                    </div>
+
+                    <!-- Center: Navigation Pills (Aerovista Style) -->
+                    <nav class="hidden md:flex items-center space-x-1 space-x-reverse bg-darkBg/60 px-3 py-1.5 rounded-full border border-white/5">
+                        <button onclick="switchTab('overview')" id="navTabOverview" class="px-5 py-2 rounded-full text-xs font-bold transition bg-brandGold text-darkBg shadow">الرئيسية</button>
+                        <button onclick="switchTab('orders')" id="navTabOrders" class="px-5 py-2 rounded-full text-xs font-bold transition text-gray-300 hover:text-white">الطلبيات</button>
+                        <button onclick="switchTab('analytics')" id="navTabAnalytics" class="px-5 py-2 rounded-full text-xs font-bold transition text-gray-300 hover:text-white">التحليلات</button>
+                        <button onclick="switchTab('team')" id="navTabTeam" class="px-5 py-2 rounded-full text-xs font-bold transition text-gray-300 hover:text-white">فريق العمل</button>
+                    </nav>
+
+                    <!-- Right: Actions & User Profile -->
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <button onclick="openAddOrderModal()" class="gold-gradient text-darkBg font-black px-5 py-2.5 rounded-full shadow-lg hover:opacity-95 flex items-center space-x-2 space-x-reverse text-xs tracking-wider transition transform hover:scale-105">
+                            <i class="fa-solid fa-circle-plus text-xs"></i>
+                            <span>طلب جديد</span>
+                        </button>
+
+                        <div class="h-6 w-[1px] bg-white/10 hidden sm:block"></div>
+
+                        <div class="flex items-center space-x-2.5 space-x-reverse">
+                            <div class="w-9 h-9 rounded-full burgundy gold-gradient text-darkBg flex items-center justify-center font-black text-xs shadow-md" id="userAvatarInitials">
+                                أ
+                            </div>
+                            <div class="hidden lg:block text-right">
+                                <div class="text-xs font-black text-white" id="userNameDisplay">أحمد المدير</div>
+                                <div class="text-[9px] text-brandGold font-bold" id="userRoleBadge">المدير التنفيذي</div>
+                            </div>
+                            <button onclick="logout()" title="تسجيل الخروج" class="p-2.5 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-full transition">
+                                <i class="fa-solid fa-right-from-bracket text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 p-4 lg:p-8 space-y-8 max-w-7xl mx-auto w-full">
+
+                <!-- Welcome Banner Card -->
+                <div class="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden border border-brandGold/30">
+                    <div class="absolute -left-10 -bottom-10 w-72 h-72 bg-brandGold/5 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+                        <div>
+                            <div class="inline-flex items-center space-x-2 space-x-reverse bg-brandGold/10 text-brandGoldLight px-3.5 py-1 rounded-full text-xs font-bold border border-brandGold/30 mb-3">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span id="welcomeRoleText">نظام الإدارة التنفيذي - متصل الآن</span>
+                            </div>
+                            <h1 class="text-2xl md:text-3xl font-black text-white mb-2" id="welcomeUserGreeting">أهلاً بك مجدداً، سعادة المدير</h1>
+                            <p class="text-xs text-gray-400 max-w-xl">متابعة دقيقة لطلبيات متجر CUTE & CO لعام 2026، إحصائيات فورية، وحالة شحن دقيقة للعملاء.</p>
+                        </div>
+                        <div class="flex items-center space-x-3 space-x-reverse bg-darkBg/80 px-5 py-3 rounded-2xl border border-white/10 shadow-inner">
+                            <div class="text-right">
+                                <div class="text-[10px] text-gray-400 font-bold">إجمالي الإيرادات</div>
+                                <div class="text-lg font-black gold-text-gradient">42,850 د.ل</div>
+                            </div>
+                            <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center text-darkBg">
+                                <i class="fa-solid fa-vault text-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. Statistics Cards Grid (6 indicators) -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <!-- ناجحة -->
+                    <div onclick="filterOrdersByStatus('ناجحة')" class="glass-card p-5 rounded-3xl cursor-pointer transition transform hover:-translate-y-1 hover:border-emerald-500/50 border-r-4 border-r-emerald-500 group">
+                        <div class="text-gray-400 text-[11px] font-bold mb-1 group-hover:text-emerald-400 transition">طلبات ناجحة</div>
+                        <div class="text-2xl font-black text-emerald-400" id="indSuccess">209</div>
+                        <div class="text-[10px] text-emerald-500/80 mt-1 font-bold flex items-center gap-1"><i class="fa-solid fa-check-circle"></i> مكتملة ودفع كامل</div>
+                    </div>
+                    <!-- معلقة -->
+                    <div onclick="filterOrdersByStatus('معلقة')" class="glass-card p-5 rounded-3xl cursor-pointer transition transform hover:-translate-y-1 hover:border-pink-500/50 border-r-4 border-r-pink-500 group">
+                        <div class="text-gray-400 text-[11px] font-bold mb-1 group-hover:text-pink-400 transition">طلبات معلقة</div>
+                        <div class="text-2xl font-black text-pink-400" id="indPending">53</div>
+                        <div class="text-[10px] text-pink-500/80 mt-1 font-bold flex items-center gap-1"><i class="fa-solid fa-clock"></i> قيد المتابعة</div>
+                    </div>
+                    <!-- تم استلام العربون -->
+                    <div onclick="filterOrdersByStatus('تم استلام العربون')" class="glass-card p-5 rounded-3xl cursor-pointer transition transform hover:-translate-y-1 hover:border-teal-500/50 border-r-4 border-r-teal-500 group">
+                        <div class="text-gray-400 text-[11px] font-bold mb-1 group-hover:text-teal-400 transition">استلام عربون</div>
+                        <div class="text-2xl font-black text-teal-400" id="indDepositYes">24</div>
+                        <div class="text-[10px] text-teal-500/80 mt-1 font-bold flex items-center gap-1"><i class="fa-solid fa-wallet"></i> جاهزة للتنفيذ</div>
+                    </div>
+                    <!-- لم يتم استلام العربون -->
+                    <div onclick="filterOrdersByStatus('لم يتم استلام العربون')" class="glass-card p-5 rounded-3xl cursor-pointer transition transform hover:-translate-y-1 hover:border-orange-500/50 border-r-4 border-r-orange-500 group">
+                        <div class="text-gray-400 text-[11px] font-bold mb-1 group-hover:text-orange-400 transition">بانتظار العربون</div>
+                        <div class="text-2xl font-black text-orange-400" id="indDepositNo">11</div>
+                        <div class="text-[10px] text-orange-500/80 mt-1 font-bold flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i> بانتظار التحويل</div>
+                    </div>
+                    <!-- ملغية -->
+                    <div onclick="filterOrdersByStatus('ملغية')" class="glass-card p-5 rounded-3xl cursor-pointer transition transform hover:-translate-y-1 hover:border-rose-500/50 border-r-4 border-r-rose-500 group">
+                        <div class="text-gray-400 text-[11px] font-bold mb-1 group-hover:text-rose-400 transition">طلبات ملغية</div>
+                        <div class="text-2xl font-black text-rose-400" id="indCancelled">2</div>
+                        <div class="text-[10px] text-rose-500/80 mt-1 font-bold flex items-center gap-1"><i class="fa-solid fa-ban"></i> ملغاة</div>
+                    </div>
+                    <!-- محتملة -->
+                    <div onclick="filterOrdersByStatus('محتملة')" class="glass-card p-5 rounded-3xl cursor-pointer transition transform hover:-translate-y-1 hover:border-purple-500/50 border-r-4 border-r-purple-500 group">
+                        <div class="text-gray-400 text-[11px] font-bold mb-1 group-hover:text-purple-400 transition">طلبات محتملة</div>
+                        <div class="text-2xl font-black text-purple-400" id="indPotential">5</div>
+                        <div class="text-[10px] text-purple-500/80 mt-1 font-bold flex items-center gap-1"><i class="fa-solid fa-comments"></i> استفسارات جديدة</div>
+                    </div>
+                </div>
+
+                <!-- 2. Chart Section (Inspired by user's reference image) -->
+                <div class="glass-card p-6 md:p-8 rounded-3xl">
+                    <div class="flex flex-col md:flex-row items-center justify-between mb-6 pb-4 border-b border-white/10">
+                        <div class="flex items-center space-x-3 space-x-reverse mb-4 md:mb-0">
+                            <div class="gold-gradient text-darkBg p-3.5 rounded-2xl shadow-md">
+                                <i class="fa-solid fa-chart-pie text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-black text-base text-white">إحصائيات وتحليلات الطلبيات الملكية</h3>
+                                <p class="text-xs text-gray-400">توزيع حالات الطلبات والشحن بدقة متناهية لعام 2026</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <select id="analyticsPeriod" class="bg-darkBg border border-white/10 text-xs font-semibold rounded-2xl px-4 py-2.5 text-gray-300 focus:outline-none focus:ring-2 focus:ring-brandGold">
+                                <option>آخر 30 يوم</option>
+                                <option>هذا الشهر</option>
+                                <option>العام الحالي 2026</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                        <div class="lg:col-span-1 flex justify-center relative">
+                            <div class="w-64 h-64 relative">
+                                <canvas id="ordersChart"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                    <span class="text-3xl font-black text-white" id="chartTotalCount">304</span>
+                                    <span class="text-xs font-bold text-gray-400 tracking-wider">الإجمالي</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            <div class="flex items-center space-x-3 space-x-reverse bg-darkBg/60 p-4 rounded-2xl border border-white/5">
+                                <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 inline-block shrink-0"></span>
+                                <div>
+                                    <div class="text-[11px] text-gray-400 font-bold">الطلبيات الناجحة</div>
+                                    <div class="font-black text-xs text-white">209 (70%)</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 space-x-reverse bg-darkBg/60 p-4 rounded-2xl border border-white/5">
+                                <span class="w-3.5 h-3.5 rounded-full bg-teal-500 inline-block shrink-0"></span>
+                                <div>
+                                    <div class="text-[11px] text-gray-400 font-bold">تم استلام العربون</div>
+                                    <div class="font-black text-xs text-white">24 (8%)</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 space-x-reverse bg-darkBg/60 p-4 rounded-2xl border border-white/5">
+                                <span class="w-3.5 h-3.5 rounded-full bg-pink-500 inline-block shrink-0"></span>
+                                <div>
+                                    <div class="text-[11px] text-gray-400 font-bold">الطلبيات المعلقة</div>
+                                    <div class="font-black text-xs text-white">53 (18%)</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 space-x-reverse bg-darkBg/60 p-4 rounded-2xl border border-white/5">
+                                <span class="w-3.5 h-3.5 rounded-full bg-orange-500 inline-block shrink-0"></span>
+                                <div>
+                                    <div class="text-[11px] text-gray-400 font-bold">لم يُستلم عربونها</div>
+                                    <div class="font-black text-xs text-white">11 (4%)</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 space-x-reverse bg-darkBg/60 p-4 rounded-2xl border border-white/5">
+                                <span class="w-3.5 h-3.5 rounded-full bg-rose-500 inline-block shrink-0"></span>
+                                <div>
+                                    <div class="text-[11px] text-gray-400 font-bold">الطلبيات الملغية</div>
+                                    <div class="font-black text-xs text-white">2 (1%)</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 space-x-reverse bg-darkBg/60 p-4 rounded-2xl border border-white/5">
+                                <span class="w-3.5 h-3.5 rounded-full bg-purple-500 inline-block shrink-0"></span>
+                                <div>
+                                    <div class="text-[11px] text-gray-400 font-bold">الطلبيات المحتملة</div>
+                                    <div class="font-black text-xs text-white">5 (2%)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Orders Table Section -->
+                <div class="glass-card rounded-3xl overflow-hidden">
+                    <div class="p-6 md:p-8 border-b border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-black text-base text-white">سجل الطلبيات النشطة لمتجر CUTE & CO</h3>
+                            <p class="text-xs text-gray-400">إدارة ومتابعة طلبات العملاء بكل احترافية</p>
+                        </div>
+                        <div class="flex items-center space-x-3 space-x-reverse w-full md:w-auto">
+                            <div class="relative flex-1 md:w-72">
+                                <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400">
+                                    <i class="fa-solid fa-search"></i>
+                                </span>
+                                <input type="text" id="searchOrdersInput" onkeyup="filterTable()" placeholder="ابحث باسم العميل، الكود أو الهاتف..."
+                                    class="w-full pr-10 pl-4 py-2.5 bg-darkBg border border-white/10 rounded-2xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-brandGold text-white">
+                            </div>
+                            <select id="statusFilterDropdown" onchange="filterTable()" class="bg-darkBg border border-white/10 text-xs font-semibold rounded-2xl px-4 py-2.5 text-gray-300 focus:outline-none focus:ring-2 focus:ring-brandGold">
+                                <option value="">كل الحالات</option>
+                                <option value="ناجحة">ناجحة</option>
+                                <option value="معلقة">معلقة</option>
+                                <option value="تم استلام العربون">تم استلام العربون</option>
+                                <option value="لم يتم استلام العربون">لم يتم استلام العربون</option>
+                                <option value="ملغية">ملغية</option>
+                                <option value="محتملة">محتملة</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right border-collapse">
+                            <thead>
+                                <tr class="bg-darkBg/60 text-gray-400 text-[11px] font-black uppercase tracking-wider border-b border-white/10">
+                                    <th class="py-4 px-6">كود الطلب</th>
+                                    <th class="py-4 px-6">التاريخ والوقت</th>
+                                    <th class="py-4 px-6">اسم العميل</th>
+                                    <th class="py-4 px-6">قناة التواصل</th>
+                                    <th class="py-4 px-6">أرقام التواصل</th>
+                                    <th class="py-4 px-6">العربون / المتبقي</th>
+                                    <th class="py-4 px-6">وسيلة الدفع</th>
+                                    <th class="py-4 px-6">حالة الطلب</th>
+                                    <th class="py-4 px-6 text-center">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody" class="divide-y divide-white/5 text-xs text-gray-300 font-medium">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+        <!-- 3. ADD ORDER POPUP MODAL -->
+        <div id="addOrderModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+            <div class="glass-card rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-brandGold/40 my-8">
+                <div class="p-6 flex items-center justify-between text-white border-b border-white/10 bg-gradient-to-l from-burgundy/60 to-transparent">
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <div class="w-9 h-9 rounded-xl gold-gradient flex items-center justify-center text-darkBg font-bold shadow">
+                            <i class="fa-solid fa-cart-plus text-xs"></i>
+                        </div>
+                        <h3 class="font-black text-sm text-brandGoldLight tracking-wide">إضافة طلب جديد لمتجر CUTE & CO</h3>
+                    </div>
+                    <button onclick="closeAddOrderModal()" class="text-gray-400 hover:text-white transition p-1">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <form id="addOrderForm" onsubmit="saveNewOrder(event)" class="p-6 md:p-8 space-y-5 max-h-[80vh] overflow-y-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 mb-1.5 uppercase">اسم العميل *</label>
+                            <input type="text" id="custName" required placeholder="مثال: مريم الفيتوري"
+                                class="w-full px-4 py-3 bg-darkBg border border-white/10 rounded-2xl text-xs font-semibold text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 mb-1.5 uppercase">قناة التواصل *</label>
+                            <select id="custChannel" class="w-full px-4 py-3 bg-darkBg border border-white/10 rounded-2xl text-xs font-semibold text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                                <option value="انستا (Instagram)">إنستغرام (Instagram)</option>
+                                <option value="فيسبوك (Facebook)">فيسبوك (Facebook)</option>
+                                <option value="واتساب (WhatsApp)">واتساب (WhatsApp)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 mb-1.5 uppercase">رقم الهاتف الأول *</label>
+                            <input type="text" id="custPhone1" required placeholder="0912345678"
+                                class="w-full px-4 py-3 bg-darkBg border border-white/10 rounded-2xl text-xs font-semibold text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 mb-1.5 uppercase">رقم الهاتف الثاني (اختياري)</label>
+                            <input type="text" id="custPhone2" placeholder="0923456789"
+                                class="w-full px-4 py-3 bg-darkBg border border-white/10 rounded-2xl text-xs font-semibold text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Product Links Section -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-bold text-gray-300 uppercase">روابط المنتجات المطلوبة *</label>
+                            <button type="button" onclick="addProductLinkField()" class="text-xs text-brandGold font-bold hover:underline flex items-center space-x-1 space-x-reverse">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>إضافة رابط آخر</span>
+                            </button>
+                        </div>
+                        <div id="productLinksContainer" class="space-y-2">
+                            <div class="flex items-center space-x-2 space-x-reverse">
+                                <input type="url" required placeholder="https://instagram.com/p/..."
+                                    class="product-link-input flex-1 px-4 py-3 bg-darkBg border border-white/10 rounded-2xl text-xs text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Values -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-darkBg/60 p-5 rounded-2xl border border-white/5">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 mb-1 uppercase">إجمالي الطلب (د.ل) *</label>
+                            <input type="number" id="totalAmount" required placeholder="0.00" oninput="calculateRemaining()"
+                                class="w-full px-4 py-2.5 bg-darkBg border border-white/10 rounded-xl text-xs font-bold text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 mb-1 uppercase">قيمة العربون المستلم *</label>
+                            <input type="number" id="depositAmount" required placeholder="0.00" oninput="calculateRemaining()"
+                                class="w-full px-4 py-2.5 bg-darkBg border border-white/10 rounded-xl text-xs font-bold text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 mb-1 uppercase">المتبقي (تلقائي)</label>
+                            <input type="text" id="remainingAmount" readonly value="0.00 د.ل"
+                                class="w-full px-4 py-2.5 bg-burgundy/40 text-brandGoldLight font-black border border-white/10 rounded-xl text-xs">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 mb-1.5 uppercase">وسيلة الدفع *</label>
+                            <select id="paymentMethod" onchange="toggleReceiptUpload()" class="w-full px-4 py-3 bg-darkBg border border-white/10 rounded-2xl text-xs font-semibold text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                                <option value="كاش">كاش (نقداً)</option>
+                                <option value="حوالة">حوالة مصرفية</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 mb-1.5 uppercase">حالة الطلب *</label>
+                            <select id="orderStatus" class="w-full px-4 py-3 bg-darkBg border border-white/10 rounded-2xl text-xs font-semibold text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                                <option value="معلقة">معلقة</option>
+                                <option value="تم استلام العربون">تم استلام العربون</option>
+                                <option value="لم يتم استلام العربون">لم يتم استلام العربون</option>
+                                <option value="ناجحة">ناجحة (تم التسليم)</option>
+                                <option value="ملغية">ملغية</option>
+                                <option value="محتملة">محتملة</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Conditional Receipt Upload -->
+                    <div id="receiptUploadSection" class="hidden">
+                        <label class="block text-xs font-bold text-gray-300 mb-1.5 uppercase">إرفاق إيصال الحوالة *</label>
+                        <div class="border-2 border-dashed border-brandGold/40 rounded-2xl p-4 text-center bg-darkBg/60 hover:bg-darkBg transition cursor-pointer">
+                            <input type="file" id="receiptFile" class="hidden" onchange="handleFileSelect(event)">
+                            <label for="receiptFile" class="cursor-pointer">
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-brandGold mb-1"></i>
+                                <div class="text-xs text-gray-300 font-semibold" id="receiptFileName">انقر هنا لرفع صورة إيصال الحوالة</div>
+                                <div class="text-[10px] text-gray-500">PNG, JPG حتى 10 ميجابايت</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-end space-x-3 space-x-reverse">
+                        <button type="button" onclick="closeAddOrderModal()" class="px-5 py-3 bg-white/5 text-gray-300 hover:bg-white/10 font-bold rounded-2xl text-xs transition">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="px-6 py-3 gold-gradient text-darkBg font-black rounded-2xl text-xs shadow-lg hover:opacity-95 transition tracking-wider uppercase">
+                            حفظ الطلب الجديد
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="msgBox" class="fixed bottom-6 left-6 z-50 hidden glass-card text-white px-6 py-4 rounded-2xl shadow-2xl border border-brandGold flex items-center space-x-3 space-x-reverse">
+            <i class="fa-solid fa-circle-check text-brandGold text-lg"></i>
+            <span id="msgBoxText" class="text-xs font-bold">تمت العملية بنجاح</span>
+        </div>
+
+    </div>
+
+    <script>
+        let ordersData = [
+            {
+                code: 'CUTE-2026-001',
+                date: '22 سبتمبر 2026 - 04:21 م',
+                name: 'Haifa Cosmetics',
+                channel: 'انستا (Instagram)',
+                phone1: '0918276407',
+                phone2: '0921112233',
+                links: ['https://instagram.com/p/sample1'],
+                total: 250,
+                deposit: 50,
+                remaining: 200,
+                paymentMethod: 'حوالة',
+                receipt: 'receipt_001.jpg',
+                status: 'تم استلام العربون'
+            },
+            {
+                code: 'CUTE-2026-002',
+                date: '22 سبتمبر 2026 - 02:10 م',
+                name: 'سارة الأحمد',
+                channel: 'فيسبوك (Facebook)',
+                phone1: '0923334455',
+                phone2: '',
+                links: ['https://facebook.com/item1', 'https://facebook.com/item2'],
+                total: 450,
+                deposit: 450,
+                remaining: 0,
+                paymentMethod: 'كاش',
+                receipt: '',
+                status: 'ناجحة'
+            },
+            {
+                code: 'CUTE-2026-003',
+                date: '21 سبتمبر 2026 - 11:30 ص',
+                name: 'فاطمة عمر',
+                channel: 'واتساب (WhatsApp)',
+                phone1: '0945556677',
+                phone2: '0919998877',
+                links: ['https://instagram.com/p/sample3'],
+                total: 180,
+                deposit: 0,
+                remaining: 180,
+                paymentMethod: 'حوالة',
+                receipt: '',
+                status: 'معلقة'
+            },
+            {
+                code: 'CUTE-2026-004',
+                date: '20 سبتمبر 2026 - 06:15 م',
+                name: 'ريم الفيتوري',
+                channel: 'انستا (Instagram)',
+                phone1: '0928887766',
+                phone2: '',
+                links: ['https://instagram.com/p/sample4'],
+                total: 320,
+                deposit: 0,
+                remaining: 320,
+                paymentMethod: 'حوالة',
+                receipt: '',
+                status: 'لم يتم استلام العربون'
+            }
+        ];
+
+        let currentUser = {
+            name: 'أحمد المدير',
+            email: 'director@cute-co.com',
+            role: 'executive'
+        };
+
+        let chartInstance = null;
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const role = document.getElementById('loginRole').value;
+            
+            currentUser.email = email;
+            currentUser.role = role;
+
+            if(role === 'executive') {
+                currentUser.name = 'أحمد (مدير تنفيذي)';
+                document.getElementById('userRoleBadge').innerText = 'المدير التنفيذي';
+                document.getElementById('welcomeRoleText').innerText = 'نظام الإدارة التنفيذي - صلاحيات كاملة';
+                document.getElementById('userAvatarInitials').innerText = 'أ';
+            } else if(role === 'operational') {
+                currentUser.name = 'منى (مدير تشغيلي)';
+                document.getElementById('userRoleBadge').innerText = 'المدير التشغيلي';
+                document.getElementById('welcomeRoleText').innerText = 'نظام الإدارة التشغيلي - متابعة العمليات';
+                document.getElementById('userAvatarInitials').innerText = 'م';
+            } else {
+                currentUser.name = 'خالد (موظف مبيعات)';
+                document.getElementById('userRoleBadge').innerText = 'موظف مبيعات';
+                document.getElementById('welcomeRoleText').innerText = 'قسم المبيعات - إدخال ومتابعة الطلبات';
+                document.getElementById('userAvatarInitials').innerText = 'خ';
+            }
+
+            document.getElementById('userNameDisplay').innerText = currentUser.name;
+            document.getElementById('welcomeUserGreeting').innerText = `أهلاً بك مجدداً، ${currentUser.name.split(' ')[0]}`;
+
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+
+            initDashboard();
+            showNotification('تم تسجيل الدخول بنجاح إلى نظام CUTE & CO 2026');
+        }
+
+        function logout() {
+            document.getElementById('dashboardScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            showNotification('تم تسجيل الخروج بنجاح');
+        }
+
+        function switchTab(tabName) {
+            ['overview', 'orders', 'analytics', 'team'].forEach(t => {
+                const btn = document.getElementById('navTab' + t.charAt(0).toUpperCase() + t.slice(1));
+                if(btn) {
+                    if(t === tabName) {
+                        btn.className = 'px-5 py-2 rounded-full text-xs font-bold transition bg-brandGold text-darkBg shadow';
+                    } else {
+                        btn.className = 'px-5 py-2 rounded-full text-xs font-bold transition text-gray-300 hover:text-white';
+                    }
+                }
+            });
+            showNotification('تم الانتقال إلى تبويب: ' + tabName);
+        }
+
+        function initDashboard() {
+            renderStatistics();
+            renderTable(ordersData);
+            initChart();
+        }
+
+        function renderStatistics() {
+            const success = ordersData.filter(o => o.status === 'ناجحة').length + 200;
+            const pending = ordersData.filter(o => o.status === 'معلقة').length + 50;
+            const depositYes = ordersData.filter(o => o.status === 'تم استلام العربون').length + 20;
+            const depositNo = ordersData.filter(o => o.status === 'لم يتم استلام العربون').length + 10;
+            const cancelled = ordersData.filter(o => o.status === 'ملغية').length + 1;
+            const potential = ordersData.filter(o => o.status === 'محتملة').length + 4;
+
+            document.getElementById('indSuccess').innerText = success;
+            document.getElementById('indPending').innerText = pending;
+            document.getElementById('indDepositYes').innerText = depositYes;
+            document.getElementById('indDepositNo').innerText = depositNo;
+            document.getElementById('indCancelled').innerText = cancelled;
+            document.getElementById('indPotential').innerText = potential;
+
+            const total = success + pending + depositYes + depositNo + cancelled + potential;
+            document.getElementById('chartTotalCount').innerText = total;
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('ordersChart').getContext('2d');
+            if(chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['ناجحة', 'تم استلام العربون', 'معلقة', 'لم يُستلم عربونها', 'ملغية', 'محتملة'],
+                    datasets: [{
+                        data: [209, 24, 53, 11, 2, 5],
+                        backgroundColor: ['#10b981', '#14b8a6', '#ec4899', '#f97316', '#f43f5e', '#a855f7'],
+                        borderWidth: 0,
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('ordersTableBody');
+            tbody.innerHTML = '';
+
+            if(data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="text-center py-10 text-gray-500 font-semibold">لا توجد طلبات مطابقة للبحث</td></tr>`;
+                return;
+            }
+
+            data.forEach(order => {
+                let badgeClass = 'bg-white/5 text-gray-300';
+                if(order.status === 'ناجحة') badgeClass = 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
+                else if(order.status === 'معلقة') badgeClass = 'bg-pink-500/10 text-pink-400 border border-pink-500/20';
+                else if(order.status === 'تم استلام العربون') badgeClass = 'bg-teal-500/10 text-teal-400 border border-teal-500/20';
+                else if(order.status === 'لم يتم استلام العربون') badgeClass = 'bg-orange-500/10 text-orange-400 border border-orange-500/20';
+                else if(order.status === 'ملغية') badgeClass = 'bg-rose-500/10 text-rose-400 border border-rose-500/20';
+                else if(order.status === 'محتملة') badgeClass = 'bg-purple-500/10 text-purple-400 border border-purple-500/20';
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-white/[0.02] transition';
+                tr.innerHTML = `
+                    <td class="py-4 px-6 font-black text-brandGold">${order.code}</td>
+                    <td class="py-4 px-6 text-gray-400 font-medium">${order.date}</td>
+                    <td class="py-4 px-6 font-bold text-white">${order.name}</td>
+                    <td class="py-4 px-6"><span class="bg-brandGold/10 border border-brandGold/20 text-brandGoldLight px-2.5 py-1 rounded-xl text-[11px] font-bold">${order.channel}</span></td>
+                    <td class="py-4 px-6 font-mono font-semibold text-gray-300">
+                        <div>${order.phone1}</div>
+                        ${order.phone2 ? `<div class="text-gray-500 text-[11px]">${order.phone2}</div>` : ''}
+                    </td>
+                    <td class="py-4 px-6">
+                        <div class="text-emerald-400 font-bold">عربون: ${order.deposit} د.ل</div>
+                        <div class="text-gray-400 text-[11px]">متبقي: ${order.remaining} د.ل</div>
+                    </td>
+                    <td class="py-4 px-6">
+                        <span class="px-3 py-1 rounded-xl text-[11px] font-bold ${order.paymentMethod === 'كاش' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'}">${order.paymentMethod}</span>
+                    </td>
+                    <td class="py-4 px-6">
+                        <span class="px-3 py-1.5 rounded-xl text-[11px] font-bold inline-block shadow-xs ${badgeClass}">${order.status}</span>
+                    </td>
+                    <td class="py-4 px-6 text-center">
+                        <div class="flex items-center justify-center space-x-2 space-x-reverse">
+                            <button onclick="viewDetails('${order.code}')" title="عرض التفاصيل" class="p-2 bg-white/5 hover:bg-brandGold hover:text-darkBg text-gray-300 rounded-xl transition">
+                                <i class="fa-solid fa-eye text-xs"></i>
+                            </button>
+                            ${currentUser.role !== 'sales' ? `
+                            <button onclick="deleteOrder('${order.code}')" title="حذف" class="p-2 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-xl transition">
+                                <i class="fa-solid fa-trash text-xs"></i>
+                            </button>` : ''}
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterTable() {
+            const query = document.getElementById('searchOrdersInput').value.toLowerCase();
+            const statusVal = document.getElementById('statusFilterDropdown').value;
+
+            const filtered = ordersData.filter(o => {
+                const matchesQuery = o.name.toLowerCase().includes(query) || o.code.toLowerCase().includes(query) || o.phone1.includes(query);
+                const matchesStatus = statusVal === '' || o.status === statusVal;
+                return matchesQuery && matchesStatus;
+            });
+
+            renderTable(filtered);
+        }
+
+        function filterOrdersByStatus(status) {
+            document.getElementById('statusFilterDropdown').value = status;
+            filterTable();
+        }
+
+        function openAddOrderModal() {
+            document.getElementById('addOrderModal').classList.remove('hidden');
+        }
+
+        function closeAddOrderModal() {
+            document.getElementById('addOrderModal').classList.add('hidden');
+            document.getElementById('addOrderForm').reset();
+            document.getElementById('receiptUploadSection').classList.add('hidden');
+            document.getElementById('productLinksContainer').innerHTML = `
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <input type="url" required placeholder="https://instagram.com/p/..."
+                        class="product-link-input flex-1 px-4 py-3 bg-darkBg border border-white/10 rounded-2xl text-xs text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                </div>
+            `;
+        }
+
+        function addProductLinkField() {
+            const container = document.getElementById('productLinksContainer');
+            const div = document.createElement('div');
+            div.className = 'flex items-center space-x-2 space-x-reverse pt-2';
+            div.innerHTML = `
+                <input type="url" required placeholder="https://instagram.com/p/..."
+                    class="product-link-input flex-1 px-4 py-3 bg-darkBg border border-white/10 rounded-2xl text-xs text-white focus:ring-2 focus:ring-brandGold focus:outline-none">
+                <button type="button" onclick="this.parentElement.remove()" class="p-2 text-red-400 hover:bg-red-500/10 rounded-xl">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(div);
+        }
+
+        function toggleReceiptUpload() {
+            const method = document.getElementById('paymentMethod').value;
+            const uploadSec = document.getElementById('receiptUploadSection');
+            if(method === 'حوالة') {
+                uploadSec.classList.remove('hidden');
+            } else {
+                uploadSec.classList.add('hidden');
+            }
+        }
+
+        function calculateRemaining() {
+            const total = parseFloat(document.getElementById('totalAmount').value) || 0;
+            const deposit = parseFloat(document.getElementById('depositAmount').value) || 0;
+            const remaining = Math.max(0, total - deposit);
+            document.getElementById('remainingAmount').value = remaining.toFixed(2) + ' د.ل';
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if(file) {
+                document.getElementById('receiptFileName').innerText = 'تم إرفاق الملف: ' + file.name;
+            }
+        }
+
+        function saveNewOrder(event) {
+            event.preventDefault();
+            const name = document.getElementById('custName').value;
+            const channel = document.getElementById('custChannel').value;
+            const phone1 = document.getElementById('custPhone1').value;
+            const phone2 = document.getElementById('custPhone2').value;
+            
+            const linkInputs = document.querySelectorAll('.product-link-input');
+            let links = [];
+            linkInputs.forEach(input => links.push(input.value));
+
+            const total = parseFloat(document.getElementById('totalAmount').value) || 0;
+            const deposit = parseFloat(document.getElementById('depositAmount').value) || 0;
+            const remaining = total - deposit;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const status = document.getElementById('orderStatus').value;
+
+            const newOrder = {
+                code: 'CUTE-2026-00' + (ordersData.length + 5),
+                date: 'اليوم - ' + new Date().toLocaleTimeString('ar-LY', {hour: '2-digit', minute:'2-digit'}),
+                name, channel, phone1, phone2, links, total, deposit, remaining, paymentMethod,
+                receipt: paymentMethod === 'حوالة' ? 'attached.jpg' : '',
+                status
+            };
+
+            ordersData.unshift(newOrder);
+            closeAddOrderModal();
+            renderStatistics();
+            renderTable(ordersData);
+            initChart();
+            showNotification('تم حفظ الطلب الجديد بنجاح في النظام');
+        }
+
+        function viewDetails(code) {
+            const order = ordersData.find(o => o.code === code);
+            if(order) {
+                showNotification(`تفاصيل الطلب: ${order.code} | العميل: ${order.name} | الحالة: ${order.status}`);
+            }
+        }
+
+        function deleteOrder(code) {
+            if(currentUser.role === 'sales') {
+                showNotification('عذراً، موظف المبيعات لا يملك صلاحية حذف الطلبات!');
+                return;
+            }
+            if(confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) {
+                ordersData = ordersData.filter(o => o.code !== code);
+                renderStatistics();
+                renderTable(ordersData);
+                initChart();
+                showNotification('تم حذف الطلب بنجاح');
+            }
+        }
+
+        function showNotification(text) {
+            const box = document.getElementById('msgBox');
+            document.getElementById('msgBoxText').innerText = text;
+            box.classList.remove('hidden');
+            setTimeout(() => box.classList.add('hidden'), 4000);
+        }
+    </script>
+</body>
+</html>
