@@ -519,7 +519,36 @@
         </div>
 
     </div>
+<!-- 1. سكود Firebase (Module) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhtOMn9xkW42XoRUDxberyrm_VLLJqfM8",
+            authDomain: "test-81dcc.firebaseapp.com",
+            databaseURL: "https://test-81dcc-default-rtdb.firebaseio.com",
+            projectId: "test-81dcc",
+            storageBucket: "test-81dcc.firebasestorage.app",
+            messagingSenderId: "462100667219",
+            appId: "1:462100667219:web:bb888daa0a9f1ebf22dfa6",
+            measurementId: "G-TK1FF70L4C"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // إتاحة دالة الحفظ للنظام العام
+        window.saveOrderToFirebase = async function(newOrder) {
+            try {
+                await addDoc(collection(db, "orders"), newOrder);
+                return true;
+            } catch (e) {
+                console.error("خطأ في Firebase: ", e);
+                return false;
+            }
+        };
+    </script>
     <script>
         let ordersData = [
             {
@@ -866,36 +895,7 @@
                 showNotification('حدث خطأ أثناء حفظ الطلب في القاعدة');
             }
         }
-   // استيراد وربط Firebase للعمل مباشرة في المتصفح عبر الـ CDN
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        // إعدادات مشروعك على Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyDhtOMn9xkW42XoRUDxberyrm_VLLJqfM8",
-            authDomain: "test-81dcc.firebaseapp.com",
-            databaseURL: "https://test-81dcc-default-rtdb.firebaseio.com",
-            projectId: "test-81dcc",
-            storageBucket: "test-81dcc.firebasestorage.app",
-            messagingSenderId: "462100667219",
-            appId: "1:462100667219:web:bb888daa0a9f1ebf22dfa6",
-            measurementId: "G-TK1FF70L4C"
-        };
-
-        // تهيئة Firebase و Firestore
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // تعديل دالة حفظ الطلب لترسل البيانات مباشرة إلى Firestore
-        window.saveNewOrderToFirebase = async function(newOrder) {
-            try {
-                await addDoc(collection(db, "orders"), newOrder);
-                showNotification('تم حفظ الطلب بنجاح في قاعدة بيانات Firebase');
-            } catch (e) {
-                console.error("خطأ في حفظ الطلب: ", e);
-                showNotification('فشل حفظ الطلب في قاعدة البيانات');
-            }
-        };
+   
     </script>
 </body>
 </html>
